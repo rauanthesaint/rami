@@ -2,17 +2,20 @@ import { type TypographyScale } from "@/shared/typography";
 import styles from "./TypographyOverview.module.scss";
 import clsx from "clsx";
 
-export function TypographyOverview({ scale }: { scale: TypographyScale }) {
+export function TypographyOverview({
+  scale,
+  phrase,
+}: {
+  scale: TypographyScale;
+  phrase: string;
+}) {
   return (
     <section className={clsx(styles.TypographyOverview, "no-scrollbar")}>
       {scale.steps.map(({ size, weight, lineHeight }, index) => (
         <article key={index} className={styles.TypographyStepCard}>
-          <header className={styles.TypographyStepCard__header}>
-            <span className="text-sm">
-              Font size: {size}px, Font weight: {weight}, Line height:{" "}
-              {lineHeight}px
-            </span>
-          </header>
+          <div className="text-sm text-muted-foreground">
+            {size}px, {weight}
+          </div>
           <p
             className="whitespace-nowrap"
             style={{
@@ -22,7 +25,7 @@ export function TypographyOverview({ scale }: { scale: TypographyScale }) {
               lineHeight: `${lineHeight}px`,
             }}
           >
-            How vexingly quick daft zebras jump
+            {phrase}
           </p>
         </article>
       ))}

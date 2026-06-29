@@ -5,18 +5,18 @@ import { Copy01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { toast } from "sonner";
 
-export function generateCSS(scale: TypographyScale): string {
-  const names = [
-    "t-heading > .3xl",
-    "t-heading > .2xl",
-    "t-heading > .xl",
-    "t-heading > .lg",
-    "t-heading > .md",
-    "t-heading > .sm",
-    "body",
-    "small",
-  ] as const;
+const names = [
+  "t-heading > .3xl",
+  "t-heading > .2xl",
+  "t-heading > .xl",
+  "t-heading > .lg",
+  "t-heading > .md",
+  "t-heading > .sm",
+  "body",
+  "small",
+] as const;
 
+export function generateCSS(scale: TypographyScale): string {
   const rules = names.map((name, i) => {
     const { size, weight, lineHeight } = scale.steps[i];
     return `.${name} {\n  font-size: ${size}px;\n  font-weight: ${weight};\n  line-height: ${lineHeight}px;\n}`;
