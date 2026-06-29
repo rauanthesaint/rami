@@ -3,11 +3,18 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import styles from "./TypographySettings.module.scss";
-import { fonts, ratios, useTypographyStore } from "@/shared/typography";
+import {
+  fonts,
+  ratios,
+  useTypographyStore,
+  type Font,
+  type FontType,
+} from "@/shared/typography";
 import {
   Field,
   FieldDescription,
@@ -29,6 +36,17 @@ import {
 } from "react";
 
 const MIN = 1;
+
+function sortFontsByType(fonts: Font[]): { type: FontType; fonts: Font[] }[] {
+  const map = new Map<FontType, Font[]>();
+
+  for (const font of fonts) {
+    if (!map.has(font.type)) map.set(font.type, []);
+    map.get(font.type)!.push(font);
+  }
+
+  return Array.from(map.entries()).map(([type, fonts]) => ({ type, fonts }));
+}
 
 export function TypographySettings() {
   const { config, updateConfig } = useTypographyStore();
@@ -77,6 +95,8 @@ export function TypographySettings() {
     setSize(String(config.baseSize));
   }, [config.baseSize]);
 
+  const __fonts = sortFontsByType(fonts);
+
   return (
     <FieldSet className={styles.TypographySettings}>
       <FieldGroup>
@@ -124,13 +144,16 @@ export function TypographySettings() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent position="popper">
-              <SelectGroup>
-                {fonts.map(({ id, name }) => (
-                  <SelectItem key={id} value={id}>
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              {__fonts.map(({ type, fonts }) => (
+                <SelectGroup key={type}>
+                  <SelectLabel>{type.toUpperCase()}</SelectLabel>
+                  {fonts.map(({ id, name }) => (
+                    <SelectItem key={id} value={id}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))}
             </SelectContent>
           </Select>
         </Field>

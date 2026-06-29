@@ -1,9 +1,10 @@
 import { create } from "zustand";
 
+export type FontType = "sans-serif" | "serif" | "monospace"
 export type Font = {
   id: string;
   name: string;
-  type: "sans-serif" | "serif" | "monospace";
+  type: FontType;
 };
 
 export type SizeRatio = {
