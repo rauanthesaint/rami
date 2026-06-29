@@ -22,9 +22,9 @@ function generateBlocks(
       return [
         block,
         {
-          fontSize: `${size}px`,
+          fontSize: size,
           fontWeight: weight,
-          lineHeight: `${lineHeight}px`,
+          lineHeight: lineHeight,
         },
       ];
     })

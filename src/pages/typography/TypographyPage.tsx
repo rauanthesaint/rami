@@ -1,7 +1,12 @@
 import { TypographySettings } from "@/widgets/typography-settings";
 import { TypographyOverview } from "@/widgets/typography-overview";
 import styles from "./TypographyPage.module.scss";
-import { generateScale, useTypographyStore } from "@/shared/typography";
+import {
+  generateScale,
+  type Unit,
+  unitNames,
+  useTypographyStore,
+} from "@/shared/typography";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ViewIcon } from "@hugeicons/core-free-icons";
@@ -10,6 +15,7 @@ import { TypographyPreview } from "@/widgets/typography-preview";
 import { TypographyExport } from "@/widgets/typography-export/ui";
 import { Input } from "@/components/ui/input";
 import { useState, type ChangeEvent } from "react";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 const defaultPhrase = "How vexingly quick daft zebras jump";
 
@@ -24,12 +30,26 @@ export function TypographyPage() {
     }
   };
 
-  const scale = generateScale(config);
+  const [unit, setUnit] = useState<Unit>("px");
+
+  const scale = generateScale(config, unit);
   return (
     <main className={styles.TypographyPage}>
       <TypographySettings />
       <div className={styles.content}>
         <div className={styles.header}>
+          <ButtonGroup>
+            {unitNames.map((name) => (
+              <Button
+                onClick={() => setUnit(name)}
+                disabled={unit === name}
+                variant={"outline"}
+                key={name}
+              >
+                {name}
+              </Button>
+            ))}
+          </ButtonGroup>
           <Input
             value={phrase}
             onChange={onPhraseChange}

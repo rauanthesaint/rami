@@ -19,7 +19,7 @@ const names = [
 export function generateCSS(scale: TypographyScale): string {
   const rules = names.map((name, i) => {
     const { size, weight, lineHeight } = scale.steps[i];
-    return `.${name} {\n  font-size: ${size}px;\n  font-weight: ${weight};\n  line-height: ${lineHeight}px;\n}`;
+    return `.${name} {\n  font-size: ${size};\n  font-weight: ${weight};\n  line-height: ${lineHeight};\n}`;
   });
 
   return rules.join("\n\n");

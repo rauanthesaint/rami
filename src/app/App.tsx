@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { RootLayout } from "./layouts/root";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { TypographyPage } from "@/pages/typography";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
@@ -17,12 +18,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<Navigate to={"/typography"} replace />} />
-          <Route element={<RootLayout />}>
-            <Route path="/typography" element={<TypographyPage />} />
-          </Route>
-        </Routes>
+        <TooltipProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to={"/typography"} replace />} />
+            <Route element={<RootLayout />}>
+              <Route path="/typography" element={<TypographyPage />} />
+            </Route>
+          </Routes>
+        </TooltipProvider>
         <Toaster position="top-center" />
       </QueryClientProvider>
     </BrowserRouter>

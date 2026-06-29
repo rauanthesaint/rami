@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type FontType = "sans-serif" | "serif" | "monospace"
+export type FontType = "sans-serif" | "serif" | "monospace" | "handwriting";
 export type Font = {
   id: string;
   name: string;
@@ -13,7 +13,7 @@ export type SizeRatio = {
 };
 
 export type TypographyStep = {
-  size: number;
+  size: string;
   weight: number;
   lineHeight: number;
 };
@@ -24,44 +24,38 @@ export type TypographyScale = {
 };
 
 function calculateLineHeight(fontSize: number): number {
-  let ratio: number;
-
-  if (fontSize <= 16) {
-    ratio = 1.5;
-  } else if (fontSize <= 24) {
-    ratio = 1.4;
-  } else if (fontSize <= 36) {
-    ratio = 1.3;
-  } else {
-    ratio = 1.2;
-  }
-
-  // return Math.round(fontSize * ratio);
-  return Math.round((fontSize * ratio) / 4) * 4;
+  if (fontSize <= 16) return 1.5;
+  if (fontSize <= 24) return 1.4;
+  if (fontSize <= 36) return 1.3;
+  return 1.2;
 }
 
-export function generateScale(config: TypographyConfig): TypographyScale {
+export const unitNames = ["px", "rem"] as const;
+export type Unit = (typeof unitNames)[number];
+
+export function generateScale(
+  config: TypographyConfig,
+  unit: Unit = "px"
+): TypographyScale {
   const { baseSize, ratio } = config;
   const result = [];
   const minSize = 14;
 
   for (let i = 6; i >= -1; i--) {
-    const rawSize = Math.round(baseSize * Math.pow(ratio, i) * 100) / 100;
+    const rawSize = baseSize * Math.pow(ratio, i);
     const size = Math.max(rawSize, minSize);
-
     const weight = i >= 5 ? 700 : i >= 3 ? 600 : i >= 1 ? 500 : 400;
 
+    const sizeInUnit = unit === "rem" ? rawSize / baseSize : rawSize;
+
     result.push({
-      size,
+      size: `${Math.round(sizeInUnit * 100) / 100}${unit}`,
       lineHeight: calculateLineHeight(size),
       weight,
     });
   }
 
-  return {
-    config,
-    steps: result,
-  };
+  return { config, steps: result };
 }
 
 export const ratios: SizeRatio[] = [
@@ -124,6 +118,11 @@ export const fonts: Font[] = [
     id: "manrope",
     name: "Manrope",
     type: "sans-serif",
+  },
+  {
+    id: "dancing-script",
+    name: "Dancing Script",
+    type: "handwriting",
   },
 ];
 

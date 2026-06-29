@@ -1,6 +1,7 @@
 import { type TypographyScale } from "@/shared/typography";
 import styles from "./TypographyOverview.module.scss";
 import clsx from "clsx";
+import { CopyText } from "@/shared/copy-text";
 
 export function TypographyOverview({
   scale,
@@ -14,7 +15,7 @@ export function TypographyOverview({
       {scale.steps.map(({ size, weight, lineHeight }, index) => (
         <article key={index} className={styles.TypographyStepCard}>
           <div className="text-sm text-muted-foreground">
-            {size}px, {weight}
+            <CopyText>{size}</CopyText>, {weight}
           </div>
           <p
             className="whitespace-nowrap"
@@ -22,7 +23,7 @@ export function TypographyOverview({
               fontFamily: `"${scale.config.font.name} Variable", ${scale.config.font.type}`,
               fontSize: size,
               fontWeight: weight,
-              lineHeight: `${lineHeight}px`,
+              lineHeight: lineHeight,
             }}
           >
             {phrase}
